@@ -1,4 +1,4 @@
-package be.stefan.meet;
+package be.stefan.food;
 
 import org.junit.Test;
 
