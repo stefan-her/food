@@ -9,5 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="app_theme">#cc7a00</color>
     <color name="app_top">#cc3300</color>
-    <color name="add_item">#ecffb3</color>>
+    <color name="add_item">#ecffb3</color>
+    <color name="meat">#b30000</color>
+    <color name="fruit">#ff6600</color>
+    <color name="vegetable">#00b300</color>
 </resources>
