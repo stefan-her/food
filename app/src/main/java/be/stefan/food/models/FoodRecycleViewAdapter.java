@@ -1,6 +1,9 @@
 package be.stefan.food.models;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +20,11 @@ import be.stefan.food.R;
 public class FoodRecycleViewAdapter extends RecyclerView.Adapter<FoodRecycleViewAdapter.ViewHolder> {
 
     public ArrayList<Food> foodsList;
+    private Context context;
 
-    public FoodRecycleViewAdapter(ArrayList<Food> listItem) {
+    public FoodRecycleViewAdapter(ArrayList<Food> listItem, Context context) {
         this.foodsList = listItem;
+        this.context = context;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -44,27 +49,24 @@ public class FoodRecycleViewAdapter extends RecyclerView.Adapter<FoodRecycleView
         return new ViewHolder(v);
     }
 
-    @SuppressLint("ResourceAsColor")
+    @SuppressLint({"ResourceAsColor", "ResourceType"})
     @Override
     public void onBindViewHolder(@NonNull FoodRecycleViewAdapter.ViewHolder holder,
                                  int position) {
         Food item = foodsList.get(position);
         holder.foodName.setText(item.getName());
-        String txt = String.format("%s %s", item.getKcal(), R.string.kcal);
-        holder.kcal.setText(txt);
 
-
-
+        String text = String.format(context.getString(R.string.kcal), item.getKcal());
+        holder.kcal.setText(text);
 
         switch (item.getCatFood()) {
-            case MEAT: holder.borderTop.setBackgroundColor(Integer.parseInt(String.valueOf(R.color.meat)));
+            case MEAT: holder.borderTop.setBackgroundColor(Color.parseColor(context.getString(R.color.meat)));
                 break;
-            case FRUIT: holder.borderTop.setBackgroundColor(Integer.parseInt(String.valueOf(R.color.fruit)));
+            case FRUIT: holder.borderTop.setBackgroundColor(Color.parseColor(context.getString(R.color.fruit)));
                 break;
-            case VEGETABLE: holder.borderTop.setBackgroundColor(Integer.parseInt(String.valueOf(R.color.vegetable)));
+            case VEGETABLE: holder.borderTop.setBackgroundColor(Color.parseColor(context.getString(R.color.vegetable)));
                 break;
         }
-
 
     }
 
