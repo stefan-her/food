@@ -1,7 +1,6 @@
-package be.stefan.food.models;
+package be.stefan.food.adapters;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -15,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import be.stefan.food.R;
+import be.stefan.food.models.Food;
 
 
 public class FoodRecycleViewAdapter extends RecyclerView.Adapter<FoodRecycleViewAdapter.ViewHolder> {
@@ -45,11 +45,11 @@ public class FoodRecycleViewAdapter extends RecyclerView.Adapter<FoodRecycleView
     public ViewHolder onCreateViewHolder(
             @NonNull ViewGroup parent,
             int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
+        View v = LayoutInflater.from(context).inflate(R.layout.item, parent, false);
         return new ViewHolder(v);
     }
 
-    @SuppressLint({"ResourceAsColor", "ResourceType"})
+    @SuppressLint("ResourceType")
     @Override
     public void onBindViewHolder(@NonNull FoodRecycleViewAdapter.ViewHolder holder,
                                  int position) {
@@ -59,15 +59,19 @@ public class FoodRecycleViewAdapter extends RecyclerView.Adapter<FoodRecycleView
         String text = String.format(context.getString(R.string.kcal), item.getKcal());
         holder.kcal.setText(text);
 
+        int colorRes;
         switch (item.getCatFood()) {
-            case MEAT: holder.borderTop.setBackgroundColor(Color.parseColor(context.getString(R.color.meat)));
+            case MEAT: colorRes = Color.parseColor(context.getString(R.color.meat));
                 break;
-            case FRUIT: holder.borderTop.setBackgroundColor(Color.parseColor(context.getString(R.color.fruit)));
+            case FRUIT: colorRes = Color.parseColor(context.getString(R.color.fruit));
                 break;
-            case VEGETABLE: holder.borderTop.setBackgroundColor(Color.parseColor(context.getString(R.color.vegetable)));
+            case VEGETABLE: colorRes = Color.parseColor(context.getString(R.color.vegetable));
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + item.getCatFood());
         }
-
+        
+        holder.borderTop.setBackgroundColor(colorRes);
     }
 
     @Override

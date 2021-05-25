@@ -2,22 +2,24 @@ package be.stefan.food;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import be.stefan.food.R;
 import be.stefan.food.models.Food;
-import be.stefan.food.models.FoodRecycleViewAdapter;
+import be.stefan.food.adapters.FoodRecycleViewAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,13 +42,17 @@ public class MainActivity extends AppCompatActivity {
 
 
         bt_add = findViewById(R.id.bt_add);
-        bt_add.setOnClickListener(v -> { addRecycleView(v); });
+        bt_add.setOnClickListener(v -> { addFood(); });
     }
 
-    private void addRecycleView(View v) {
+    private void addFood() {
         foodName = (EditText) findViewById(R.id.txt_food);
         foodCal = (EditText) findViewById(R.id.text_kcal);
         foodType = (Spinner) findViewById(R.id.sp_type);
+
+        Log.d("value -------> ", String.valueOf(foodType.getSelectedItemId()));
+
+
 
 //        foods.add(new Food(foodName.getText().toString(),
 //                Integer.parseInt(foodCal.getText().toString()),
@@ -65,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
         FoodRecycleViewAdapter adapter = new FoodRecycleViewAdapter(foods, getApplicationContext());
         rv_mainFoods.setAdapter(adapter);
-        rv_mainFoods.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+        rv_mainFoods.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
     }
 
     private void buildActionBar() {
@@ -76,9 +82,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void buildSpinner(Spinner obj) {
         ArrayList<String> catFood = new ArrayList<>();
-        catFood.add(getString(R.string.vegetable));
-        catFood.add(getString(R.string.meat));
-        catFood.add(getString(R.string.fruit));
+        for (Food.CatFood type : Food.CatFood.values()) {
+            String el = String.valueOf(type).toLowerCase();
+            int id = getResources().getIdentifier(el, "string", getPackageName());
+            if(id != 0) { catFood.add(getString(id)); }
+            else { catFood.add((el)); }
+        }
 
         ArrayAdapter<String> spinnerAd = new ArrayAdapter<>(
                 getApplicationContext(),
